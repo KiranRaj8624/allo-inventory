@@ -9,20 +9,15 @@ export async function POST(
     const idempotencyKey = req.headers.get("Idempotency-Key") ?? undefined;
     const { cached, data } = await reservationService.confirm(params.id, idempotencyKey);
 
+    const d = data as Record<string, unknown>;
+
     const serialized = {
-      ...data,
-      expiresAt: data instanceof Object && "expiresAt" in data
-        ? (data.expiresAt instanceof Date ? data.expiresAt.toISOString() : data.expiresAt)
-        : undefined,
-      createdAt: data instanceof Object && "createdAt" in data
-        ? (data.createdAt instanceof Date ? data.createdAt.toISOString() : data.createdAt)
-        : undefined,
-      updatedAt: data instanceof Object && "updatedAt" in data
-        ? (data.updatedAt instanceof Date ? data.updatedAt.toISOString() : data.updatedAt)
-        : undefined,
-      confirmedAt: data instanceof Object && "confirmedAt" in data
-        ? ((data.confirmedAt instanceof Date ? data.confirmedAt.toISOString() : data.confirmedAt) ?? null)
-        : null,
+      ...d,
+      expiresAt: d.expiresAt instanceof Date ? d.expiresAt.toISOString() : (d.expiresAt ?? null),
+      createdAt: d.createdAt instanceof Date ? d.createdAt.toISOString() : (d.createdAt ?? null),
+      updatedAt: d.updatedAt instanceof Date ? d.updatedAt.toISOString() : (d.updatedAt ?? null),
+      confirmedAt: d.confirmedAt instanceof Date ? d.confirmedAt.toISOString() : (d.confirmedAt ?? null),
+      releasedAt: d.releasedAt instanceof Date ? d.releasedAt.toISOString() : (d.releasedAt ?? null),
     };
 
     return NextResponse.json(serialized, {
