@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { NextRequest, NextResponse } from "next/server";
 import { reservationService } from "@/services/reservation.service";
 import { createReservationSchema } from "@/validators";

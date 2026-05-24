@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { NextRequest, NextResponse } from "next/server";
 import { reservationRepository } from "@/repositories/reservation.repository";
 import { inventoryRepository } from "@/repositories/inventory.repository";
